@@ -1,2 +1,5 @@
-# zepnrf_zero2hero
-programing `Nordic nRF5340` on `Zephyr RTOS`
+### Programing `Nordic nRF5340` on `Zephyr RTOS` 学习笔记
+
+- nRF5340 DK
+- Manjaro Linux
+- bash shell
