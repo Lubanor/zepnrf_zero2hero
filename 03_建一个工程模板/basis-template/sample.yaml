@@ -1,0 +1,25 @@
+sample:
+  name: basis-template  # 项目名称（与文档中一致）
+  description: "Light LED when button is pressed"  # 简短描述
+
+tests:
+  button_led.basic:  # 测试用例名称（建议格式：<sample_name>.<test_case>）
+    tags:
+      - buttons
+      - leds
+      - gpio
+    filter: >
+      dt_enabled_alias_with_parent_compat("led0", "gpio-leds") and
+      dt_enabled_alias_with_parent_compat("button0", "gpio-keys")
+    depends_on:
+      - gpio
+    harness:
+      - led  # 测试时监测 LED 状态
+      - console  # 可选：如果需要串口输出调试信息
+    integration_platforms:
+      - nrf5340dk_nrf5340_cpuapp  # 示例平台，替换为你的目标板
+      - your_custom_board         # 自定义开发板（如果有）
+    extra_configs:
+      - CONFIG_GPIO=y             # 必须启用 GPIO
+      - CONFIG_LOG=y             # 可选：启用日志调试
+      - CONFIG_GPIO_DEBOUNCE=y    # 可选：如果需要硬件消抖
