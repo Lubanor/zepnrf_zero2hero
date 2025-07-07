@@ -1,0 +1,62 @@
+/dts-v1/;
+/plugin/;
+
+/ {
+    aliases {
+        led0 = &led0;
+        led1 = &led1;
+        led2 = &led2;
+        led3 = &led3;
+
+        sw0  = &button0;
+        sw1  = &button1;
+        sw2  = &button2;
+        sw3  = &button3;
+    };
+
+    /* 修改 LED 引脚配置 */
+    leds {
+        compatible = "gpio-leds";
+        led0: led_0 {
+            gpios = <&gpio0 28 GPIO_ACTIVE_LOW>;  // LED1 (P0.28)
+            label = "LED_1";
+        };
+        led1: led_1 {
+            gpios = <&gpio0 29 GPIO_ACTIVE_LOW>;  // LED2 (P0.29)
+            label = "LED_2";
+        };
+        led2: led_2 {
+            gpios = <&gpio0 30 GPIO_ACTIVE_LOW>;  // LED3 (P0.30)
+            label = "LED_3";
+        };
+        led3: led_3 {
+            gpios = <&gpio0 31 GPIO_ACTIVE_LOW>;  // LED4 (P0.31)
+            label = "LED_4";
+        };
+    };
+
+    /* 修改按钮引脚配置 */
+    buttons {
+        compatible = "gpio-keys";
+        button0: button_0 {
+            gpios = <&gpio0 23 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
+            label = "Button_0";
+            zephyr,code = <INPUT_KEY_0>;
+        };
+        button1: button_1 {
+            gpios = <&gpio0 24 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
+            label = "Button_1";
+            zephyr,code = <INPUT_KEY_1>;
+        };
+        button2: button_2 {
+            gpios = <&gpio0 8 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
+            label = "Button_2";
+            zephyr,code = <INPUT_KEY_2>;
+        };
+        button3: button_3 {
+            gpios = <&gpio0 9 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
+            label = "Button_3";
+            zephyr,code = <INPUT_KEY_3>;
+        };
+    };
+};
