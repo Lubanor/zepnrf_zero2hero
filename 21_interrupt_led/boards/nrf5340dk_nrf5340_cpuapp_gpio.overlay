@@ -1,0 +1,33 @@
+/dts-v1/;
+/plugin/;
+
+/ {
+    /* 别名 */
+    aliases {
+        led0 = &led0;
+        led1 = &led1;
+        led2 = &led2;
+        led3 = &led3;
+    };
+
+    /* 配置 LED */
+    leds {
+        compatible = "gpio-leds";
+        led0: led_0 {
+            gpios = <&gpio0 28 GPIO_ACTIVE_LOW>;  // LED1 (P0.28)
+            label = "LED_1";
+        };
+        led1: led_1 {
+            gpios = <&gpio0 29 GPIO_ACTIVE_LOW>;  // LED2 (P0.29)
+            label = "LED_2";
+        };
+        led2: led_2 {
+            gpios = <&gpio0 30 GPIO_ACTIVE_LOW>;  // LED3 (P0.30)
+            label = "LED_3";
+        };
+        led3: led_3 {
+            gpios = <&gpio0 31 GPIO_ACTIVE_LOW>;  // LED4 (P0.31)
+            label = "LED_4";
+        };
+    };
+};
