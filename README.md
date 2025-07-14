@@ -14,7 +14,7 @@ bash
 source zephyr/zephyr-env.sh
 export ZEPHYR_SDK_INSTALL_DIR=$HOME/zephyr-tools/zephyr-sdk-0.16.1
 
-# build & flash
-west build -b nrf5340dk/nrf5340/cpuapp --shield ssd1306_128x64 myprojects/31_iic_oled
-west flash
+# # build & flash
+# west build -b nrf5340dk/nrf5340/cpuapp myprojects/prj_name
+# west flash
 ```
