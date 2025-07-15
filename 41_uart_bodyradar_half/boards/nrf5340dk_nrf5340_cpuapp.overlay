@@ -1,0 +1,72 @@
+/*
+ * nrf5340dk_nrf5340_cpuapp.overlay -- 将人体检测模块连接到 UART1 和一个 GPIO 引脚
+ *
+ * 功能：启用 UART1 和 GPIO1，连接 Rd03 雷达模块
+ * 引脚映射：
+ *   - UART1 TX: P1.13 (雷达 Rx)
+ *   - UART1 RX: P1.14 (雷达 OT1/Tx)
+ *   - GPIO1: P1.15 (雷达 OT2)
+ */
+
+/dts-v1/;
+
+/ {
+    /* 创建别名，方便在 C 代码中引用 */
+    aliases {
+        /* 将 sensor-uart 别名指向 uart1 设备 */
+        sensor-uart = &uart1;
+    };
+
+    /*
+     * 定义一个 gpio-keys 兼容节点来处理 OT2 引脚。
+     * 这样可以很方便地使用 Zephyr 的 GPIO 中断回调 API。
+     */
+    sensor_gpios {
+        compatible = "gpio-keys";
+        detection_pin: detection_pin {
+            label = "Human detection state pin";
+            /*
+             * 连接到 &gpio1 (P1.xx 控制器) 的 15 号引脚 (P1.15)
+             * GPIO_ACTIVE_HIGH 表示当引脚为高电平时触发。
+             */
+            gpios = <&gpio1 15 GPIO_ACTIVE_HIGH>;
+        };
+    };
+};
+
+/* 使能 GPIO1 */
+&gpio1 {
+    status = "okay";
+};
+
+/* 配置 pinctrl 以将 UART1 路由到我们选择的引脚 */
+&pinctrl {
+    /* 定义 uart1 的引脚配置 */
+    uart1_default: uart1_default {
+        group1 {
+            psels = <NRF_PSEL(UART_TX, 1, 13)>, <NRF_PSEL(UART_RX, 1, 14)>;
+        };
+    };
+
+    /* 如果需要，可以定义低功耗/睡眠时的引脚状态 */
+    uart1_sleep: uart1_sleep {
+        group1 {
+            psels = <NRF_PSEL(UART_TX, 1, 13)>, <NRF_PSEL(UART_RX, 1, 14)>;
+            low-power-enable;
+        };
+    };
+};
+
+
+/* 使能并配置 uart1 设备 */
+&uart1 {
+    compatible = "nordic,nrf-uarte";
+    /* 将 pinctrl 配置应用到 uart1 */
+    pinctrl-0 = <&uart1_default>;
+    pinctrl-1 = <&uart1_sleep>;
+    pinctrl-names = "default", "sleep";
+    /* 设置波特率。115200 是一个常见的值。*/
+    current-speed = <115200>;
+    /* 启用设备 */
+    status = "okay";
+};
